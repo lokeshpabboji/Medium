@@ -1,0 +1,1 @@
+export const BACKEND_URL = "https://backend.lokeshpabboji.workers.dev/api/v1/"
