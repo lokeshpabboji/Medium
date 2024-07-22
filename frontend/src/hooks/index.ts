@@ -15,11 +15,9 @@ interface Blog {
 export function useBlog({ id } : {id : Readonly<Params<string>>}) {
     const [loading, setLoading] = useState(true);
     const [blog, setBlog] = useState<Blog>();
-    // const { blogId } = useParams();
-
     useEffect(() => {
         console.log(id.id)
-        axios.get(`${BACKEND_URL}blog/${id}`, {
+        axios.get(`${BACKEND_URL}blog/${id.id}`, {
             headers : {
                 Authorization : localStorage.getItem('token')
             }
