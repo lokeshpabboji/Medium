@@ -42,7 +42,7 @@ export function useBlogs() {
                 Authorization : localStorage.getItem('token')
             }
         }).then(response => {
-            if(response.data.erro){
+            if(response.data.error === "Unauthorized"){
                 navigate("/signin")
             }else{
                 setBlogs(response.data.blogs)
