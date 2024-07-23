@@ -36,18 +36,18 @@ export function useBlogs() {
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const navigate = useNavigate();
 
-    if(!localStorage.getItem("token")){
-        navigate("/signin")
-    }
-
     useEffect(() => {
         axios.get(`${BACKEND_URL}blog/bulk`, {
             headers : {
                 Authorization : localStorage.getItem('token')
             }
         }).then(response => {
-            setBlogs(response.data.blogs)
-            setLoading(false)
+            if(response.data.erro){
+                navigate("/signin")
+            }else{
+                setBlogs(response.data.blogs)
+                setLoading(false)
+            }
         })
     },[])
     return {
