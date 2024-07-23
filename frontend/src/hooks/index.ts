@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
-import { Params } from "react-router-dom";
+import { Params, useNavigate } from "react-router-dom";
 
 interface Blog {
     content : string,
@@ -16,7 +16,6 @@ export function useBlog({ id } : {id : Readonly<Params<string>>}) {
     const [loading, setLoading] = useState(true);
     const [blog, setBlog] = useState<Blog>();
     useEffect(() => {
-        console.log(id.id)
         axios.get(`${BACKEND_URL}blog/${id.id}`, {
             headers : {
                 Authorization : localStorage.getItem('token')
@@ -25,7 +24,7 @@ export function useBlog({ id } : {id : Readonly<Params<string>>}) {
             setBlog(response.data.blog)
             setLoading(false)
         })
-    },[id])
+    },[id.id])
     return {
         loading,
         blog
@@ -35,6 +34,11 @@ export function useBlog({ id } : {id : Readonly<Params<string>>}) {
 export function useBlogs() {
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<Blog[]>([]);
+    const navigate = useNavigate();
+
+    if(!localStorage.getItem("token")){
+        navigate("/signin")
+    }
 
     useEffect(() => {
         axios.get(`${BACKEND_URL}blog/bulk`, {
