@@ -34,21 +34,27 @@ export function useBlog({ id } : {id : Readonly<Params<string>>}) {
 export function useBlogs() {
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<Blog[]>([]);
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get(`${BACKEND_URL}blog/bulk`, {
-            headers : {
-                Authorization : localStorage.getItem('token')
-            }
-        }).then(response => {
-            if(response.data.error === "Unauthorized"){
-                navigate("/signin")
-            }else{
+        const token = localStorage.getItem('token');
+        if(!token){
+            // alert the user in a nice way here
+            console.warn("please signin to see the dashboard")
+            navigate("/signin");
+        }
+        try {
+            axios.get(`${BACKEND_URL}blog/bulk`, {
+                headers : {
+                    Authorization : localStorage.getItem('token')
+                }
+            }).then(response => {
                 setBlogs(response.data.blogs)
                 setLoading(false)
-            }
-        })
+            })
+        } catch (e) {
+            console.log(e)
+        }
     },[])
     return {
         loading,

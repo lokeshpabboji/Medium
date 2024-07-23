@@ -6,8 +6,8 @@ import { BlogSkeleton } from "../Skeletons/Blog";
 
 export function Blog(){
     const id = useParams()
-    const {loading, blog} = useBlog({ id });
-    if (loading){
+    const {loading, blog} = useBlog({ id : id || "" });
+    if (loading || !blog){
         return (
             <BlogSkeleton />
         )
