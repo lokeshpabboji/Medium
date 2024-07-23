@@ -38,6 +38,7 @@ export function useBlogs() {
 
     if(!localStorage.getItem("token")){
         navigate("/signin")
+        return;
     }
 
     useEffect(() => {
