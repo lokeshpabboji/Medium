@@ -15,6 +15,7 @@ interface Blog {
 export function useBlog({ id } : {id : Readonly<Params<string>>}) {
     const [loading, setLoading] = useState(true);
     const [blog, setBlog] = useState<Blog>();
+    const navigate = useNavigate()
     useEffect(() => {
         axios.get(`${BACKEND_URL}blog/${id.id}`, {
             headers : {
@@ -23,6 +24,9 @@ export function useBlog({ id } : {id : Readonly<Params<string>>}) {
         }).then(response => {
             setBlog(response.data.blog)
             setLoading(false)
+        }).catch(error  => {
+            alert(error.response.data.error)
+            navigate('/signin')
         })
     },[id.id])
     return {
@@ -51,9 +55,13 @@ export function useBlogs() {
             }).then(response => {
                 setBlogs(response.data.blogs)
                 setLoading(false)
+            }).catch(error  => {
+                alert(error.response.data.error)
+                navigate('/signin')
             })
         } catch (e) {
-            console.log(e)
+            alert("error while signing in")
+            navigate("/signin")
         }
     },[])
     return {
