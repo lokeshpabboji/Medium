@@ -55,12 +55,12 @@ export function useBlogs() {
             }).then(response => {
                 setBlogs(response.data.blogs)
                 setLoading(false)
-            }).catch(error  => {
-                alert(error.response.data.error)
+            }).catch((error)  => {
+                alert(`${error.response.data.error} please signin to see the blogs`)
                 navigate('/signin')
             })
         } catch (e) {
-            alert("error while signing in")
+            alert("error while signing in please signin to see the blogs")
             navigate("/signin")
         }
     },[])
