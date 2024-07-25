@@ -35,6 +35,40 @@ export function useBlog({ id } : {id : Readonly<Params<string>>}) {
     }
 }
 
+export function useMyblogs(){
+    const [loading, setLoading] = useState(true)
+    const [blogs, setBlogs] = useState<Blog[]>([])
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if(!token){
+            alert("please signin to see your blogs")
+            navigate("/signin")
+        }
+        try {
+            axios.get(`${BACKEND_URL}blog/myblogs`, {
+                headers : {
+                    Authorization : localStorage.getItem("token")
+                }
+            }).then(res => {
+                setBlogs(res.data.blogs)
+                setLoading(false)
+            }).catch(error => {
+                alert(`${error.response.data.message}! please signin to see your blogs`)
+                navigate('/signin')
+            })
+        } catch (e) {
+            alert("error while fetching the blogs! signin")
+            navigate("/signin")
+        }
+    }, [])
+    return {
+        loading,
+        blogs
+    }
+}
+
 export function useBlogs() {
     const [loading, setLoading] = useState(true);
     const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -44,7 +78,7 @@ export function useBlogs() {
         const token = localStorage.getItem('token');
         if(!token){
             // alert the user in a nice way here
-            console.warn("please signin to see the dashboard")
+            alert("please signin to see the dashboard")
             navigate("/signin");
         }
         try {
@@ -56,7 +90,7 @@ export function useBlogs() {
                 setBlogs(response.data.blogs)
                 setLoading(false)
             }).catch((error)  => {
-                alert(`${error.response.data.error} please signin to see the blogs`)
+                alert(`${error.response.data.error}! please signin to see the dashboard`)
                 navigate('/signin')
             })
         } catch (e) {
