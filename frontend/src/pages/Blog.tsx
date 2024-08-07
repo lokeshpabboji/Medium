@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { AppBar } from "../components/AppBar"
 import { useBlog } from "../hooks";
 import { FullBlog } from "../components/FullBlog";
 import { BlogSkeleton } from "../Skeletons/Blog";
@@ -13,9 +12,6 @@ export function Blog(){
         )
     }
     return (
-        <div>
-            <AppBar authorName={blog?.author.name || "M"}></AppBar>
-            <FullBlog authorName={blog?.author.name || ""} title={blog?.title || ""} content={blog?.content || ""}></FullBlog>
-        </div>
+        <FullBlog authorName={blog?.author.name || ""} title={blog?.title || ""} content={blog?.content || ""}></FullBlog>
     )
 }

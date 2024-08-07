@@ -6,6 +6,7 @@ import { Blogs } from './pages/Blogs'
 import { Publish } from './pages/Publish'
 import { Myblogs } from './pages/Myblogs'
 import './App.css'
+import Layout from './Layout'
 
 function App() {
 
@@ -15,11 +16,13 @@ function App() {
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/signin' element={<Signin />} />
-          <Route path='/blog/:id' element={<Blog />} />
-          <Route path='/home' element={<Blogs />} />
-          <Route path='/publish' element={<Publish />} />
-          <Route path='/myblogs' element={<Myblogs />} />
-          <Route path='/' element={<Blogs />} />
+          <Route path='/' element={<Layout />}>
+            <Route path='' element={<Blogs />} />
+            <Route path='home' element={<Blogs />} />
+            <Route path='blog/:id' element={<Blog />} />
+            <Route path='publish' element={<Publish />} />
+            <Route path='myblogs' element={<Myblogs />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

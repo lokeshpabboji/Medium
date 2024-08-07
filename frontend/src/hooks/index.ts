@@ -12,6 +12,40 @@ interface Blog {
     }
 }
 
+export function useUserInfo(){
+    const [loading, setLoading] = useState(true);
+    const [info, setInfo] = useState<{name : string, email : string}>()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if(!token){
+            alert("please signin to see your blogs")
+            navigate("/signin")
+        }
+        try {
+            axios.get(`${BACKEND_URL}user/info`, {
+                headers : {
+                    Authorization : localStorage.getItem("token")
+                }
+            }).then(res => {
+                setInfo(res.data)
+                setLoading(false)
+            }).catch(error => {
+                alert(`${error.response.data.message}! please signin to see your blogs`)
+                navigate("/signin")
+            })
+        } catch (e) {
+            alert("error while fetching the blogs! signin")
+            navigate("/signin")
+        }
+    }, [])
+    return {
+        loading,
+        info
+    }
+}
+
 export function useBlog({ id } : {id : Readonly<Params<string>>}) {
     const [loading, setLoading] = useState(true);
     const [blog, setBlog] = useState<Blog>();

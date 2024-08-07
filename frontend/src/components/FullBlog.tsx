@@ -1,6 +1,6 @@
 export function FullBlog({authorName, title, content} : {authorName : string, title : string, content : string}) {
     return (
-        <div className="grid grid-cols-12 px-32 pt-16">
+        <div className="grid grid-cols-12 px-32 pt-16 z">
                 <div className="col-span-8">
                     <div className="text-6xl font-extrabold mb-5">
                         {title}
