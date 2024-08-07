@@ -109,6 +109,7 @@ blogRouter.get('/bulk', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl : c.env.DATABASE_URL
     }).$extends(withAccelerate());
+    const userId = c.get("userId")
 
     try {
         const blogs = await prisma.post.findMany({
@@ -121,7 +122,12 @@ blogRouter.get('/bulk', async (c) => {
                         name : true
                     }
                 }
-            }
+            },
+            where: {
+                authorId: {
+                  not : userId,
+                },
+            },
         });
         return c.json({blogs})
     } catch (e) {
